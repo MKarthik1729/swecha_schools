@@ -5,7 +5,7 @@ var connection = sql.createConnection({
     user:"swecha",
     password:"Swecha2404",
     port:"3306"
-})
+}) 
 
 connection.connect()
 

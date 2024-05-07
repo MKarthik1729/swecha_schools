@@ -5,19 +5,14 @@ function createClass(classData, callback) {
     const query = 'INSERT INTO classes (school_id, class_name, section_name, academic_id, class_teacher, subject_id) VALUES (?, ?, ?, ?, ?, ?)';
     const values = [school_id, class_name, section_name, academic_id, class_teacher, subject_id];
     
-
     connection.query(query, values, (err, result) => {
-        // Handle query results
         if (err) {
             console.error('Error creating class:', err);
             callback(err);
             return;
         }
         console.log('Class created successfully');
-        console.log(result)
-        callback(null, result.insertId); // Pass the inserted class_id back to the callback
-        
-
+        callback(null, result.insertId);
     });
 }
 
@@ -33,11 +28,10 @@ function editClass(classId, classData, callback) {
             return;
         }
         console.log('Class edited successfully');
-        callback(null, result.affectedRows); // Return the number of affected rows
+        callback(null, result.affectedRows);
     });
 }
 
-// Function to delete a class
 function deleteClass(classId, callback) {
     const query = 'DELETE FROM classes WHERE class_id=?';
     
@@ -48,11 +42,10 @@ function deleteClass(classId, callback) {
             return;
         }
         console.log('Class deleted successfully');
-        callback(null, result.affectedRows); // Return the number of affected rows
+        callback(null, result.affectedRows);
     });
 }
 
-// Function to get classes by school
 function getClassesBySchool(schoolId, callback) {
     const query = 'SELECT * FROM classes WHERE school_id=?';
     
@@ -62,12 +55,10 @@ function getClassesBySchool(schoolId, callback) {
             callback(err, null);
             return;
         }
-        callback(null, rows); // Return the retrieved classes
+        callback(null, rows);
     });
 }
 
-// Function to get classes with no assigned teacher
-// Function to get classes with no teacher assigned
 function NoTeacher(callback) {
     const query = 'SELECT * FROM classes WHERE class_teacher IS NULL';
     
@@ -77,8 +68,8 @@ function NoTeacher(callback) {
             callback(err, null);
             return;
         }
-        console.log('Classes with no teacher:', rows); // Log the retrieved classes
-        callback(null, rows); // Return the retrieved classes
+        console.log('Classes with no teacher:', rows);
+        callback(null, rows);
     });
 }
 
@@ -87,12 +78,11 @@ function getAllClasses(callback) {
     
     connection.query(query, (err, rows) => {
         if (err) {
-            console.error('Error getting classes with no teacher:', err);
+            console.error('Error getting all classes:', err);
             callback(err, null);
             return;
         }
-        console.log('Classes with no teacher:', rows); // Log the retrieved classes
-        callback(null, rows); // Return the retrieved classes
+        callback(null, rows);
     });
 }
 
@@ -102,5 +92,5 @@ module.exports = {
     deleteClass,
     getClassesBySchool,
     NoTeacher,
-    getAllClasses // Add this line to export the new function
+    getAllClasses
 };

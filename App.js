@@ -9,6 +9,8 @@ app.use(express.json());
 // Define a route handler for the root path
 app.use('/',require('./routes/router'))
 app.use('/',require('./routes/classRouter'))
+app.use('/',require('./routes/studentRouter'))
+app.use('/',require('./routes/teacherRouter'))
 
 
 // Start the server on port 3000
