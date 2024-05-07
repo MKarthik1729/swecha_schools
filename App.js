@@ -11,6 +11,9 @@ app.use('/',require('./routes/router'))
 app.use('/',require('./routes/classRouter'))
 app.use('/',require('./routes/studentRouter'))
 app.use('/',require('./routes/teacherRouter'))
+app.use('/',require('./routes/subjectRouter'))
+app.use('/',require('./routes/eventRouter'))
+app.use('/',require('./routes/deviceRouter'))
 
 
 // Start the server on port 3000
