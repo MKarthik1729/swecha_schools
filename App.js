@@ -1,9 +1,13 @@
 // Importing required modules
 const express = require('express');
 require('dotenv').config();
+const cors = require('cors');
+
 const sql = require('./models/database')
 // Creating an Express application
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 // Define a route handler for the root path
