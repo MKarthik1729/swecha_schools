@@ -4,7 +4,7 @@ const connection = require('../models/database')
 
 const router = express.Router();
 const otpReq = require('../support')
-const {getAccountbyMobile} = require('../controllers/Controller')
+const {getAccountbyMobile,createAcadYear,deleteAcadYear} = require('../controllers/Controller')
 
 router.get('/', (req, res) => {
   res.send('Hello, World!');
@@ -72,5 +72,31 @@ router.post('/otp', async (req, res) => {
   }
 })
 
+
+router.post('/acadyear', (req, res) => {
+  const { year } = req.body;
+  createAcadYear(year, (err, result) => {
+    if (err) {
+      console.error('Error creating academic year:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.status(201).json({ message: 'Academic year created successfully', result });
+  });
+});
+
+// Route to delete academic year by ID
+router.delete('/acadyear/:id', (req, res) => {
+  const acadId = req.params.id;
+  deleteAcadYear(acadId, (err, result) => {
+    if (err) {
+      console.error('Error deleting academic year:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Academic year not found' });
+    }
+    res.status(200).json({ message: 'Academic year deleted successfully' });
+  });
+});
 
 module.exports = router;
