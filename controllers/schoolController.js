@@ -48,9 +48,20 @@ const msgCountIncrement = (schoolId,num, callback) => {
     });
 };
 
+const getAllSchools =(callback) => {
+    const sql = `Select * from school`;
+    db.query(sql,(err, result) => {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, result);
+    });
+};
+
 module.exports = {
 createSchool,
 editSchool,
 deleteSchool,
-msgCountIncrement
+msgCountIncrement,
+getAllSchools
 }

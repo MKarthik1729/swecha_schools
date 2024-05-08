@@ -2,7 +2,7 @@ const express = require('express');
 const app = express.Router();
 
 // Import the functions and assuming db is your MySQL connection
-const { createSchool, editSchool, deleteSchool, msgCountIncrement } = require('../controllers/schoolController');
+const { createSchool, editSchool, deleteSchool, msgCountIncrement, getAllSchools } = require('../controllers/schoolController');
 
 // Route to create a school
 app.post('/school', (req, res) => {
@@ -47,6 +47,17 @@ app.post('/school/:id/msgCountIncrement', (req, res) => {
         res.status(200).send('Message count incremented successfully');
     });
 });
+
+app.get('/getschools',(req, res) => {
+    getAllSchools((err, events) => {
+        if (err) {
+            console.error("Error getting all events:", err);
+            res.status(500).send("Error getting all events");
+            return;
+        }
+        res.status(200).send(events);
+    });
+})
 
 
 module.exports = app
