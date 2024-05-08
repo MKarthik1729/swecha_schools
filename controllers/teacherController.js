@@ -3,8 +3,9 @@ const connection = require('../models/database');
 // Function to create a new teacher
 function createTeacher(teacherData, callback) {
     const { school_id, name, mobile, class_dealing } = teacherData;
-    const query = "INSERT INTO teacher (school_id, name, mobile, class_dealing) VALUES (?, ?, ?, ?)";
-    connection.query(query, [school_id, name, mobile, class_dealing], (error, results) => {
+    // const query = "INSERT INTO teacher (school_id, name, mobile, class_dealing) VALUES (?, ?, ?, ?)";
+    const query = "CALL create_teacher(?, ?, ?, ?);";
+    connection.query(query, [name, mobile, school_id, class_dealing], (error, results) => {
         if (error) {
             callback(error, null);
         } else {
@@ -16,8 +17,9 @@ function createTeacher(teacherData, callback) {
 // Function to edit an existing teacher
 function editTeacher(teacherId, teacherData, callback) {
     const { school_id, name, mobile, class_dealing } = teacherData;
-    const query = "UPDATE teacher SET school_id=?, name=?, mobile=?, class_dealing=? WHERE id=?";
-    connection.query(query, [school_id, name, mobile, class_dealing, teacherId], (error, results) => {
+    // const query = "UPDATE teacher SET school_id=?, name=?, mobile=?, class_dealing=? WHERE id=?";
+    const query = "CALL UpdateTeacherAndAccount(?, ?, ?, ?, ?);"
+    connection.query(query, [teacherId,school_id, name, mobile, class_dealing], (error, results) => {
         if (error) {
             callback(error, null);
         } else {
