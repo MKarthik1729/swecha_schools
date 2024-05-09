@@ -22,7 +22,32 @@ function deleteSubject(id, callback) {
     });
 }
 
+
+const getAllSubjects = (callback) => {
+    const query = "SELECT * FROM subjects";
+    connection.query(query, (err, rows) => {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        callback(null, rows);
+    });
+};
+
+const getSubjectsbyClass= (class_idcallback) => {
+    const query = "SELECT * FROM subjects where class_id=?";
+    connection.query(query,class_id, (err, rows) => {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        callback(null, rows);
+    });
+};
+
 module.exports = {
     createSubject,
-    deleteSubject
+    deleteSubject,
+    getAllSubjects,
+    getSubjectsbyClass
 };

@@ -63,7 +63,7 @@ router.get('/classes/:schoolId', (req, res) => {
             res.status(500).json({ error: 'Failed to get classes by school' });
             return;
         }
-        res.status(200).json({ classes });
+        res.status(200).json(classes);
     });
 });
 

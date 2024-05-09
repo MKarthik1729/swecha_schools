@@ -49,7 +49,7 @@ router.post('/otp', async (req, res) => {
         } 
         if (rows.length>0){
           const type = rows[0].type
-        res.status(200).json({type: type});
+        res.status(200).json(rows);
           if(type==0){
            otpReq(numbers, otp, 'student');
           }else if(type==1){
@@ -98,5 +98,22 @@ router.delete('/acadyear/:id', (req, res) => {
     res.status(200).json({ message: 'Academic year deleted successfully' });
   });
 });
+
+router.get('/feedata/:school_id', (req, res) => {
+  var school_id = req.params.school_id
+  const query = `SELECT t.term_id, t.term, COUNT(CASE WHEN fs.paid = TRUE THEN 1 ELSE NULL END) AS noOfPaid, COUNT(CASE WHEN fs.paid = FALSE THEN 1 ELSE NULL END) AS noOfUnpaid, SUM(CASE WHEN fs.paid = TRUE THEN fs.fee_paid ELSE 0 END) AS total_fee_paid, SUM(CASE WHEN fs.paid = FALSE THEN fs.fee_bal ELSE 0 END) AS total_fee_bal FROM terms t LEFT JOIN fee_status fs ON t.term_id = fs.term_id WHERE t.school_id = ${school_id} GROUP BY t.term_id, t.term`
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching accounts:', error);
+      res.status(500).json({ error: 'Error fetching accounts' });
+    } else {
+      // Send the fetched accounts as JSON
+      res.json(results);
+    }
+  });
+});
+
+
+
 
 module.exports = router;
