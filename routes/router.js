@@ -104,8 +104,8 @@ router.get('/feedata/:school_id', (req, res) => {
   const query = `SELECT t.term_id, t.term, COUNT(CASE WHEN fs.paid = TRUE THEN 1 ELSE NULL END) AS noOfPaid, COUNT(CASE WHEN fs.paid = FALSE THEN 1 ELSE NULL END) AS noOfUnpaid, SUM(CASE WHEN fs.paid = TRUE THEN fs.fee_paid ELSE 0 END) AS total_fee_paid, SUM(CASE WHEN fs.paid = FALSE THEN fs.fee_bal ELSE 0 END) AS total_fee_bal FROM terms t LEFT JOIN fee_status fs ON t.term_id = fs.term_id WHERE t.school_id = ${school_id} GROUP BY t.term_id, t.term`
   connection.query(query, (error, results) => {
     if (error) {
-      console.error('Error fetching accounts:', error);
-      res.status(500).json({ error: 'Error fetching accounts' });
+      console.error('Error fetching fee data:', error);
+      res.status(500).json({ error: 'Error fetching fee data' });
     } else {
       // Send the fetched accounts as JSON
       res.json(results);
@@ -113,7 +113,21 @@ router.get('/feedata/:school_id', (req, res) => {
   });
 });
 
-
+router.get('/classfeedata/:school_id', (req, res) => {
+  var school_id = req.params.school_id
+  // const query = `SELECT t.term_id, t.term, COUNT(CASE WHEN fs.paid = TRUE THEN 1 ELSE NULL END) AS noOfPaid, COUNT(CASE WHEN fs.paid = FALSE THEN 1 ELSE NULL END) AS noOfUnpaid, SUM(CASE WHEN fs.paid = TRUE THEN fs.fee_paid ELSE 0 END) AS total_fee_paid, SUM(CASE WHEN fs.paid = FALSE THEN fs.fee_bal ELSE 0 END) AS total_fee_bal FROM terms t LEFT JOIN fee_status fs ON t.term_id = fs.term_id WHERE t.school_id = ${school_id} GROUP BY t.term_id, t.term`
+  const query = `SELECT s.student_id, s.name, s.mobile, f.fee_bal, f.fee_paid, f.paid, t.term FROM students s JOIN fee_status f ON s.student_id = f.student_id JOIN terms t ON f.term_id = t.term_id WHERE s.class_id = ${school_id};
+  `
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching fee data:', error);
+      res.status(500).json({ error: 'Error fetching fee data' });
+    } else {
+      // Send the fetched accounts as JSON
+      res.json(results);
+    }
+  });
+});
 
 
 module.exports = router;
