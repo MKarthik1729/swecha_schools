@@ -154,6 +154,7 @@ router.get('/fee-status/:class_id', (req, res) => {
     SELECT 
       t.term_id,
       t.term,
+      s.student_id,
       COUNT(CASE WHEN fs.paid = 1 THEN 1 END) AS noOfPaid,
       COUNT(CASE WHEN fs.paid = 0 THEN 1 END) AS noOfUnpaid,
       SUM(fs.fee_paid) AS total_fee_paid,

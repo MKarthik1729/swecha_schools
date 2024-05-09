@@ -34,7 +34,7 @@ const getAllSubjects = (callback) => {
     });
 };
 
-const getSubjectsbyClass= (class_idcallback) => {
+const getSubjectsbyClass= (class_id,callback) => {
     const query = "SELECT * FROM subjects where class_id=?";
     connection.query(query,class_id, (err, rows) => {
         if (err) {
