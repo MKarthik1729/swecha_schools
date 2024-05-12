@@ -51,7 +51,7 @@ router.get('/classes/no-teacher', (req, res) => {
             res.status(500).json({ error: 'Failed to get classes with no teacher' });
             return;
         }
-        res.status(200).json({ classes });
+        res.status(200).json(classes );
     });
 });
 
