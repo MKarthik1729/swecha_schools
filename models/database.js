@@ -1,12 +1,12 @@
 var sql = require('mysql')
-
+const pas = process.env.DBPASSWORD
 var connection = sql.createConnection({
-    host:"schoolsdb.ctuq6mio0i13.ap-south-2.rds.amazonaws.com",
-    user:"swecha",
+    host:process.env.DBHOST,
+    user:process.env.DBUSER,
     password:"Swecha2404",
-    port:"3306"
+    port:process.env.DBPORT
 }) 
-
+// console.log(type(process.env.DBPASSWORD))
 connection.connect()
 
 

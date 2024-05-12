@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 
   sql.query("use schools",(err,res,field)=>{
-    
+
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log("database connnected....")
     console.log(res)
