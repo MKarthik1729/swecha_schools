@@ -31,4 +31,27 @@ function add_term_to_students(term_id, class_id, fee,callback) {
     });
 }
 
-module.exports = { createTerm, getAllTerms,add_term_to_students };
+
+function get_class_terms(term_id,callback) {
+    const query = `SELECT 
+    c.class_id,
+    c.class_name,
+    c.section_name,
+    d.term_id,
+    CASE 
+        WHEN d.fee IS NULL THEN NULL
+        ELSE d.fee
+    END AS default_fee
+FROM 
+    classes c
+LEFT JOIN 
+    defaults_table d ON c.class_id = d.class_id AND d.term_id = ${term_id};`
+    connection.query(query, (error, results) => {
+        if (error) {
+            return callback(error);
+          }
+          return callback(null, results);
+    });
+}
+
+module.exports = { createTerm, getAllTerms,add_term_to_students,get_class_terms };
