@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createTeacher, editTeacher, deleteTeacher, getAllTeachers, getTeachersWithNoClassDealing } = require('../controllers/teacherController');
+const { createTeacher, editTeacher, deleteTeacher, getAllTeachers, getTeachersWithNoClassDealing,add_teacher_to_class } = require('../controllers/teacherController');
 
 // Route to create a new teacher
 router.post('/teachers', (req, res) => {
@@ -62,6 +62,19 @@ router.get('/teachers/no-class-dealing', (req, res) => {
             res.status(500).json({ error: "Unable to fetch teachers with no class dealing." });
         } else {
             res.status(200).json(teachers);
+        }
+    });
+});
+
+router.put('/addTeacherToClass', (req, res) => {
+    const {teacherId,class_id} = req.body
+    add_teacher_to_class(teacherId,class_id, (error, success) => {
+        if (error) {
+            res.status(500).json({ error: "Unable to edit teacher." });
+        } else if (!success) {
+            res.status(404).json({ error: "Teacher not found." });
+        } else {
+            res.status(200).json({ message: "Teacher edited successfully." });
         }
     });
 });

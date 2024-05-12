@@ -68,4 +68,15 @@ function getTeachersWithNoClassDealing(callback) {
     });
 }
 
-module.exports = { createTeacher, editTeacher, deleteTeacher, getAllTeachers, getTeachersWithNoClassDealing };
+function add_teacher_to_class(teacher_id,class_id, callback) {
+    const query = `CALL AssignClassAndTeacher(${class_id},${teacher_id})`
+    connection.query(query, (error, results) => {
+        if (error) {
+            callback(error, null);
+        } else {
+            callback(null, results.affectedRows > 0); // Returns true if update was successful
+        }
+    });
+}
+
+module.exports = { createTeacher, editTeacher, deleteTeacher, getAllTeachers, getTeachersWithNoClassDealing,add_teacher_to_class };
