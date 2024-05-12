@@ -20,4 +20,15 @@ function getAllTerms(school_id,callback) {
   });
 }
 
-module.exports = { createTerm, getAllTerms };
+function add_term_to_students(term_id, class_id, fee,callback) {
+    const query = "CALL add_term_to_students(?, ?, ?);"
+    connection.query(query, [class_id,term_id, fee], (error, results) => {
+        if (error) {
+            callback(error, null);
+        } else {
+            callback(null, results.affectedRows > 0); // Returns true if update was successful
+        }
+    });
+}
+
+module.exports = { createTerm, getAllTerms,add_term_to_students };
