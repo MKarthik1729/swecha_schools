@@ -44,8 +44,9 @@ router.delete('/teachers/:id', (req, res) => {
 });
 
 // Route to get all teachers
-router.get('/teachers', (req, res) => {
-    getAllTeachers((error, teachers) => {
+router.get('/teachers/:school_id', (req, res) => {
+    const school_id= req.params.school_id
+    getAllTeachers(school_id,(error, teachers) => {
         if (error) {
             res.status(500).json({ error: "Unable to fetch teachers." });
         } else {

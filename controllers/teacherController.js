@@ -41,8 +41,13 @@ function deleteTeacher(teacherId, callback) {
 }
 
 // Function to get all teachers
-function getAllTeachers(callback) {
-    const query = "SELECT * FROM teacher";
+function getAllTeachers(school_id,callback) {
+    const query = `
+    SELECT t.id, t.name, t.mobile, t.class_dealing, c.class_name, c.section_name
+FROM teacher t
+JOIN classes c ON t.class_dealing = c.class_id
+WHERE t.school_id = ${school_id};
+    `;
     connection.query(query, (error, results) => {
         if (error) {
             callback(error, null);
