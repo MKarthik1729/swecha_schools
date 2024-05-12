@@ -17,7 +17,6 @@ function createTeacher(teacherData, callback) {
 // Function to edit an existing teacher
 function editTeacher(teacherId, teacherData, callback) {
     const { school_id, name, mobile, class_dealing } = teacherData;
-    // const query = "UPDATE teacher SET school_id=?, name=?, mobile=?, class_dealing=? WHERE id=?";
     const query = "CALL UpdateTeacherAndAccount(?, ?, ?, ?, ?);"
     connection.query(query, [teacherId,school_id, name, mobile, class_dealing], (error, results) => {
         if (error) {
@@ -45,7 +44,7 @@ function getAllTeachers(school_id,callback) {
     const query = `
     SELECT t.id, t.name, t.mobile, t.class_dealing, c.class_name, c.section_name
 FROM teacher t
-JOIN classes c ON t.class_dealing = c.class_id
+LEFT JOIN classes c ON t.class_dealing = c.class_id
 WHERE t.school_id = ${school_id};
     `;
     connection.query(query, (error, results) => {
