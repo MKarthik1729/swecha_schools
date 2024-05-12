@@ -15,7 +15,7 @@ router.post('/create-class', (req, res) => {
         res.status(500).json({ error: 'Failed to create class' });
         return;
       }
-      res.status(201).json({ classId });
+      res.status(201).json(classId );
     });
 });
 
@@ -28,7 +28,7 @@ router.put('/edit-class/:classId', (req, res) => {
             res.status(500).json({ error: 'Failed to edit class' });
             return;
         }
-        res.status(200).json({ affectedRows });
+        res.status(200).json( affectedRows );
     });
 });
 
@@ -40,7 +40,7 @@ router.delete('/delete-class/:classId', (req, res) => {
             res.status(500).json({ error: 'Failed to delete class' });
             return;
         }
-        res.status(200).json({ affectedRows });
+        res.status(200).json( affectedRows) ;
     }); 
 });
 
@@ -74,7 +74,7 @@ router.get('/classes', (req, res) => {
             res.status(500).json({ error: 'Failed to get classes' });
             return;
         }
-        res.status(200).json({ classes });
+        res.status(200).json(classes );
     });
 });
 
