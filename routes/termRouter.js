@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createTerm , getAllTerms,add_term_to_students,get_class_terms } = require('../controllers/termController');
+const { createTerm , getAllTerms,add_term_to_students,get_class_terms,updateFeeStatus } = require('../controllers/termController');
 
 router.post('/terms', (req, res) => {
     const { schoolId, term } = req.body;
@@ -22,6 +22,7 @@ router.post('/terms', (req, res) => {
     });
   });
 
+  
 
   router.post('/add_term_to_students', (req, res) => {
     const {fee,class_id,term_id}  = req.body
@@ -44,4 +45,18 @@ router.post('/terms', (req, res) => {
   });
 
 
+  router.put('/fee_status/:term_id/:student_id', (req, res) => {
+    const term_id = req.params.term_id;
+    const student_id = req.params.student_id;
+    const { fee_paid, fee_bal, paid } = req.body;
+  
+    updateFeeStatus(term_id, student_id, fee_paid, fee_bal, paid, (err, result) => {
+      if (err) {
+        res.status(500).send('Error updating fee status');
+        return;
+      }
+      res.send('Fee status updated successfully');
+    });
+  });
+  
   module.exports = router

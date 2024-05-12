@@ -54,4 +54,22 @@ LEFT JOIN
     });
 }
 
-module.exports = { createTerm, getAllTerms,add_term_to_students,get_class_terms };
+
+function updateFeeStatus(term_id, student_id, fee_paid, fee_bal, paid, callback) {
+    const updateQuery = `UPDATE fee_status 
+                         SET fee_paid = ?, fee_bal = ?, paid = ? 
+                         WHERE term_id = ? AND student_id = ?`;
+  
+    connection.query(updateQuery, [fee_paid, fee_bal, paid, term_id, student_id], (err, result) => {
+      if (err) {
+        console.error('Error updating fee status: ' + err.message);
+        callback(err);
+        return;
+      }
+      console.log('Fee status updated successfully');
+      callback(null, result);
+    });
+  }
+  
+
+module.exports = { createTerm, getAllTerms,add_term_to_students,get_class_terms,updateFeeStatus };

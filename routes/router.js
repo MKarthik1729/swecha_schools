@@ -165,17 +165,18 @@ router.get('/fee-status/:class_id', (req, res) => {
 
   // Query to fetch data
   const query = `
-    SELECT t.term_id, t.term, 
-           SUM(IF(fs.paid = 1, 1, 0)) AS noOfPaid,
-           SUM(IF(fs.paid = 0, 1, 0)) AS noOfUnpaid,
-           SUM(fs.fee_paid) AS total_fee_paid,
-           SUM(fs.fee_bal) AS total_fee_bal,
-           s.student_id, s.name, s.mobile, fs.fee_bal, fs.fee_paid, fs.paid
-    FROM terms t
-    LEFT JOIN fee_status fs ON t.term_id = fs.term_id
-    LEFT JOIN students s ON fs.student_id = s.student_id
-    WHERE  s.class_id = ?
-    GROUP BY t.term_id, s.student_id
+  SELECT t.term_id, t.term, 
+  SUM(IF(fs.paid = 1, 1, 0)) AS noOfPaid,
+  SUM(IF(fs.paid = 0, 1, 0)) AS noOfUnpaid,
+  SUM(fs.fee_paid) AS total_fee_paid,
+  SUM(fs.fee_bal) AS total_fee_bal,
+  s.student_id, s.name, s.mobile, fs.fee_bal, fs.fee_paid, fs.paid
+FROM terms t
+LEFT JOIN fee_status fs ON t.term_id = fs.term_id
+LEFT JOIN students s ON fs.student_id = s.student_id
+WHERE s.class_id = ?
+GROUP BY t.term_id, s.student_id
+ORDER BY s.name;
   `;
 
   // Execute query
