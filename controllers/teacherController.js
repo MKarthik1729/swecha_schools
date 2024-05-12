@@ -29,7 +29,7 @@ function editTeacher(teacherId, teacherData, callback) {
 
 // Function to delete a teacher
 function deleteTeacher(teacherId, callback) {
-    const query = "DELETE FROM teacher WHERE id=?";
+    const query = "DELETE FROM teacher WHERE id=? ";
     connection.query(query, [teacherId], (error, results) => {
         if (error) {
             callback(error, null);
@@ -45,7 +45,8 @@ function getAllTeachers(school_id,callback) {
     SELECT t.id, t.name, t.mobile, t.class_dealing, c.class_name, c.section_name
 FROM teacher t
 LEFT JOIN classes c ON t.class_dealing = c.class_id
-WHERE t.school_id = ${school_id};
+WHERE t.school_id = ${school_id}
+order by t.name
     `;
     connection.query(query, (error, results) => {
         if (error) {
@@ -58,7 +59,7 @@ WHERE t.school_id = ${school_id};
 
 // Function to get teachers with no class dealing
 function getTeachersWithNoClassDealing(callback) {
-    const query = "SELECT * FROM teacher WHERE class_dealing IS NULL OR class_dealing = 0";
+    const query = "SELECT * FROM teacher WHERE class_dealing IS NULL OR class_dealing = 0 order by name";
     connection.query(query, (error, results) => {
         if (error) {
             callback(error, null);

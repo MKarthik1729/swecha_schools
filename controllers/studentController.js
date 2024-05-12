@@ -27,12 +27,12 @@ const deleteStudent = (student_id, callback) => {
 
 // Function to get all students
 const getAllStudents = (callback) => {
-    mysqlConnection.query('SELECT * FROM students', callback);
+    mysqlConnection.query('SELECT * FROM students order by name', callback);
 };
 
 // Function to get students by class
 const getStudentbyClass = (class_id, callback) => {
-    mysqlConnection.query('SELECT * FROM students WHERE class_id=?', [class_id], callback);
+    mysqlConnection.query('SELECT * FROM students WHERE class_id=? order by name', [class_id], callback);
 };
 
 // Export the functions
