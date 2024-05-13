@@ -160,23 +160,92 @@ router.get('/getAllfee/:school_id', (req, res) => {
   });
 });
 
-router.get('/fee-status/:class_id', (req, res) => {
+// router.get('/fee-status/:class_id', (req, res) => {
+//   const classId = req.params.class_id;
+
+//   // Query to fetch data
+//   const query = `
+//   SELECT t.term_id, t.term, 
+//   SUM(IF(fs.paid = 1, 1, 0)) AS noOfPaid,
+//   SUM(IF(fs.paid = 0, 1, 0)) AS noOfUnpaid,
+//   SUM(fs.fee_paid) AS total_fee_paid,
+//   SUM(fs.fee_bal) AS total_fee_bal,
+//   s.student_id, s.name, s.mobile, fs.fee_bal, fs.fee_paid, fs.paid
+// FROM terms t
+// LEFT JOIN fee_status fs ON t.term_id = fs.term_id
+// LEFT JOIN students s ON fs.student_id = s.student_id
+// WHERE s.class_id = ?
+// GROUP BY t.term_id, s.student_id
+// ORDER BY s.name;
+//   `;
+
+//   // Execute query
+//   connection.query(query, [ classId], (error, results) => {
+//     if (error) {
+//       console.error("Error executing query:", error);
+//       return res.status(500).json({ error: "Internal Server Error" });
+//     }
+
+//     // Process results to match desired output structure
+//     const output = [];
+//     let currentTerm = null;
+
+//     results.forEach(row => {
+//       if (row.term_id !== currentTerm) {
+//         // If it's a new term, create a new term object
+//         currentTerm = row.term_id;
+//         output.push({
+//           term_id: row.term_id,
+//           term: row.term,
+//           noOfPaid: 0,
+//           noOfUnpaid: 0,
+//           total_fee_paid: 0,
+//           total_fee_bal: 0,
+//           students: []
+//         });
+//       }
+
+//       const termIndex = output.length - 1;
+
+//       // Update term-level statistics
+//       output[termIndex].noOfPaid += row.paid ? 1 : 0;
+//       output[termIndex].noOfUnpaid += row.paid ? 0 : 1;
+//       output[termIndex].total_fee_paid += row.fee_paid;
+//       output[termIndex].total_fee_bal += row.fee_bal;
+
+//       // Add student data to the current term
+//       output[termIndex].students.push({
+//         student_id: row.student_id,
+//         name: row.name,
+//         mobile: row.mobile,
+//         fee_bal: row.fee_bal,
+//         fee_paid: row.fee_paid,
+//         paid: row.paid ? 1 : 0,
+//         term: row.term
+//       });
+//     });
+
+//     res.json(output);
+//   });
+// });
+
+router.get('/class-fee-status/:class_id', (req, res) => {
+  // const schoolId = req.params.school_id;
   const classId = req.params.class_id;
 
   // Query to fetch data
   const query = `
-  SELECT t.term_id, t.term, 
-  SUM(IF(fs.paid = 1, 1, 0)) AS noOfPaid,
-  SUM(IF(fs.paid = 0, 1, 0)) AS noOfUnpaid,
-  SUM(fs.fee_paid) AS total_fee_paid,
-  SUM(fs.fee_bal) AS total_fee_bal,
-  s.student_id, s.name, s.mobile, fs.fee_bal, fs.fee_paid, fs.paid
-FROM terms t
-LEFT JOIN fee_status fs ON t.term_id = fs.term_id
-LEFT JOIN students s ON fs.student_id = s.student_id
-WHERE s.class_id = ?
-GROUP BY t.term_id, s.student_id
-ORDER BY s.name;
+    SELECT t.term_id, t.term, 
+           SUM(IF(fs.paid = 1, 1, 0)) AS noOfPaid,
+           SUM(IF(fs.paid = 0, 1, 0)) AS noOfUnpaid,
+           SUM(fs.fee_paid) AS total_fee_paid,
+           SUM(fs.fee_bal) AS total_fee_bal,
+           s.student_id, s.name, s.mobile, fs.fee_bal, fs.fee_paid, fs.paid
+    FROM terms t
+    LEFT JOIN fee_status fs ON t.term_id = fs.term_id
+    LEFT JOIN students s ON fs.student_id = s.student_id
+    WHERE s.class_id = ?
+    GROUP BY t.term_id, s.student_id
   `;
 
   // Execute query
